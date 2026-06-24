@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wrtn 模式入华可扩展性 · 战略报告</title>
+<style>
+  :root{
+    --bg:#08080b; --bg2:#0e0e13; --card:#13131a; --card2:#181820;
+    --line:#23232e; --line2:#2e2e3c;
+    --tx:#e9e9f0; --tx2:#a6a6b8; --tx3:#6f6f82;
+    --acc:#7c5cff; --acc2:#ff7eb6; --acc3:#4fd6c8; --warn:#ffb454; --bad:#ff5c72; --good:#4fd68a; --gold:#ffd479;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard","Noto Sans KR",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--tx);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:var(--acc2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);background:#1c1c26;padding:1px 6px;border-radius:5px;font-size:.86em;color:var(--acc3)}
+
+  .wrap{display:grid;grid-template-columns:248px 1fr;max-width:1280px;margin:0 auto}
+  nav.side{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:34px 18px 60px;border-right:1px solid var(--line)}
+  nav.side .brand{font-weight:800;font-size:18px;letter-spacing:-.5px;margin-bottom:4px}
+  nav.side .brandsub{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-bottom:20px}
+  nav.side .backlink{display:block;font-size:12px;color:var(--acc3);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;margin-bottom:22px;text-align:center}
+  nav.side .backlink:hover{background:var(--card);text-decoration:none}
+  nav.side a.navi{display:block;color:var(--tx2);font-size:13.5px;padding:6px 10px;border-radius:7px;border-left:2px solid transparent;margin:1px 0}
+  nav.side a.navi:hover{background:var(--card);text-decoration:none;color:var(--tx)}
+  nav.side a.navi.on{background:linear-gradient(90deg,rgba(124,92,255,.16),transparent);border-left-color:var(--acc);color:#fff}
+  main{padding:0 0 120px;min-width:0}
+  section{padding:54px 56px;border-bottom:1px solid var(--line)}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}nav.side{display:none}section{padding:40px 22px}}
+
+  .hero{position:relative;overflow:hidden;padding:84px 56px 64px;border-bottom:1px solid var(--line)}
+  .hero .blob{position:absolute;inset:-30% -10% auto -10%;height:520px;filter:blur(70px);opacity:.42;z-index:0;
+    background:radial-gradient(40% 60% at 25% 40%,#ff5c72 0,transparent 70%),
+               radial-gradient(40% 60% at 70% 30%,#7c5cff 0,transparent 70%),
+               radial-gradient(40% 60% at 55% 70%,#ffd479 0,transparent 70%)}
+  .hero>*{position:relative;z-index:1}
+  .hero .kick{font-family:var(--mono);font-size:12.5px;color:var(--acc3);letter-spacing:1px;margin-bottom:16px}
+  .hero h1{font-size:clamp(28px,4.4vw,48px);font-weight:850;letter-spacing:-1.3px;line-height:1.1}
+  .hero h1 .g{background:linear-gradient(100deg,#ff9eb8,#ffd479 55%,#a98bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{margin-top:18px;max-width:700px;font-size:16px;color:var(--tx2)}
+  .verdict{margin-top:26px;background:linear-gradient(135deg,rgba(255,92,114,.12),rgba(124,92,255,.06));border:1px solid var(--line2);border-radius:16px;padding:22px 26px}
+  .verdict b{color:#fff}
+  .verdict .hl{color:var(--gold);font-weight:700}
+
+  h2.sec{font-size:13px;font-family:var(--mono);color:var(--acc);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+  h3.title{font-size:26px;font-weight:800;letter-spacing:-.6px;margin-bottom:18px}
+  p.intro{color:var(--tx2);max-width:780px;margin-bottom:24px;font-size:15px}
+
+  /* matrix cards */
+  .matrix{display:grid;gap:16px}
+  .mx{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:8px 20px;align-items:start}
+  .mx.top{border-left:3px solid var(--gold)}
+  .mx.mid{border-left:3px solid var(--acc3)}
+  .mx.low{border-left:3px solid var(--warn)}
+  .mx.no{border-left:3px solid var(--bad);opacity:.92}
+  .mx h4{font-size:18px;margin-bottom:2px}
+  .mx .stars{font-size:15px;letter-spacing:2px;white-space:nowrap}
+  .mx .stars .on{color:var(--gold)} .mx .stars .off{color:var(--line2)}
+  .mx .grade{font-family:var(--mono);font-size:11px;color:var(--tx3);text-align:right;margin-top:2px}
+  .mx .row{grid-column:1/-1;display:grid;grid-template-columns:84px 1fr;gap:10px;padding-top:10px;margin-top:6px;border-top:1px dashed var(--line);font-size:13.5px}
+  .mx .row .lab{color:var(--tx3);font-size:11.5px;padding-top:2px}
+  .mx .row.opp .lab{color:var(--good)}
+  .mx .row.red .lab{color:var(--bad)}
+  .mx .row .val{color:var(--tx2)}
+  .mx .row.opp .val b,.mx .row.red .val b{color:#fff}
+
+  /* redline cards */
+  .reds{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.reds{grid-template-columns:1fr}}
+  .red{background:rgba(255,92,114,.05);border:1px solid rgba(255,92,114,.22);border-radius:13px;padding:18px 20px;position:relative}
+  .red .num{position:absolute;top:16px;right:18px;font-family:var(--mono);font-size:24px;font-weight:800;color:rgba(255,92,114,.25)}
+  .red h4{font-size:15px;margin-bottom:6px;padding-right:30px}
+  .red p{font-size:13px;color:var(--tx2)}
+  .red p b{color:#ffb0bb}
+
+  /* path ranking */
+  .paths{display:grid;gap:14px}
+  .path{display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+  .path .badge{font-family:var(--mono);font-weight:800;font-size:13px;text-align:center;padding:10px 0;border-radius:10px;line-height:1.3}
+  .path.p1 .badge{background:linear-gradient(135deg,#ffd479,#ff9e57);color:#231a08}
+  .path.p2 .badge{background:linear-gradient(135deg,#cdd3dd,#8b93a3);color:#1a1d22}
+  .path.p3 .badge{background:linear-gradient(135deg,#d9a06a,#a9703f);color:#1f1408}
+  .path.px .badge{background:rgba(255,92,114,.15);color:var(--bad);border:1px solid rgba(255,92,114,.3)}
+  .path h4{font-size:16px;margin-bottom:4px}
+  .path p{font-size:13.5px;color:var(--tx2)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--tx3);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
+  td b{color:#fff}
+  .wrong{color:var(--bad);font-family:var(--mono);font-size:11px}
+  .right{color:var(--good)}
+
+  ul.clean{list-style:none;padding:0}
+  ul.clean li{padding:8px 0 8px 24px;position:relative;font-size:14px;color:var(--tx2);border-bottom:1px solid var(--line)}
+  ul.clean li::before{content:"→";position:absolute;left:0;color:var(--acc)}
+  ul.clean li b{color:#fff}
+
+  .note{border-radius:12px;padding:16px 18px;font-size:13.5px;margin-top:18px}
+  .note.warn{background:rgba(255,180,84,.07);border:1px solid rgba(255,180,84,.25)}
+  .note.good{background:rgba(79,214,138,.06);border:1px solid rgba(79,214,138,.22)}
+  .note b{color:#fff}
+  .pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 8px;border-radius:20px;margin:1px 3px 1px 0;border:1px solid var(--line2)}
+  .pill.ok{color:var(--good)} .pill.bad{color:var(--bad)} .pill.warn{color:var(--warn)}
+  footer{padding:40px 56px;color:var(--tx3);font-size:12px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="side">
+    <div class="brand">入华可扩展性</div>
+    <div class="brandsub">China Strategy · 2026-06-25</div>
+    <a class="backlink" href="index.html">← 返回 Wrtn 全景调研</a>
+    <a class="navi on" href="#verdict">总判断</a>
+    <a class="navi" href="#matrix">四方向矩阵</a>
+    <a class="navi" href="#redlines">6 条硬红线</a>
+    <a class="navi" href="#paths">推荐路径</a>
+    <a class="navi" href="#headwind">市场逆风</a>
+    <a class="navi" href="#corrections">画像纠错</a>
+    <a class="navi" href="#conclusion">战略结论</a>
+  </nav>
+
+  <main>
+    <div class="hero" id="top">
+      <div class="blob"></div>
+      <div class="kick">WRTN 模式 × 中国市场 · 4 路并行调研 + 对抗式核查</div>
+      <h1>Wrtn 模式<span class="g">入华可扩展性</span><br>战略报告</h1>
+      <p class="lead">把"用户当主角 + AI 实时生成小说/图/音"的互动叙事模式拿到中国——粉丝经济、影视、心理健康哪条走得通？四路调研给出的答案是：原型走不通，但有一个细分值得押注。</p>
+      <div class="verdict">
+        <b>一句话总判断：</b>Wrtn 原型（擦边题材 × 境外模型路由 × 深度拟人陪伴 × ToC 直营）在中国<b>法律上走不通</b>——不是"难"，是"现有形态不合法"。能合规落地的版本已被剥掉全部差异化卖点，沦为退潮市场的同质化后来者。<span class="hl">唯一有结构性机会的细分是「原创世界观女性向 AI 互动叙事」。</span>
+      </div>
+    </div>
+
+    <section id="verdict">
+      <h2 class="sec">METHOD</h2>
+      <h3 class="title">调研方法</h3>
+      <p class="intro">4 路并行 WebSearch + WebFetch，覆盖 角色叙事赛道+监管 / 粉丝经济乙女 / 影视微短剧 / 心理健康四个维度；关键结论（拟人化新规、AlienChat 刑案、AI 声音侵权判例等）经官方源（网信办 cac.gov.cn、新华网、法院判决书）二次核验。全文区分 <span class="pill ok">确证</span> 与 <span class="pill warn">推测</span>。</p>
+      <div class="note warn">本轮调研同时<b>纠正了原始画像的 4 处事实错误</b>（见末节"画像纠错"），其中"角色可消失规避情感依赖"这条护城河被证实<b>查无实据</b>，直接影响判断。</div>
+    </section>
+
+    <section id="matrix">
+      <h2 class="sec">FEASIBILITY MATRIX</h2>
+      <h3 class="title">四方向可行性矩阵</h3>
+      <div class="matrix">
+        <div class="mx top">
+          <h4>粉丝经济 / 女性向乙女叙事</h4>
+          <div><div class="stars"><span class="on">★★★★</span><span class="off">★</span></div><div class="grade">最高</div></div>
+          <div class="row opp"><div class="lab">机会</div><div class="val">晋江 <b>7779 万</b>用户 + 乙游《恋与深空》年流水 <b>25-67 亿</b>、月氪千元 + <b>AO3 被封</b>造成供给真空</div></div>
+          <div class="row red"><div class="lab">红线</div><div class="val">擦边内容=<b>刑事</b> / 真人肖像声音逐项授权 / 同人版权 / 创作者反噬（Lofter 前车之鉴）</div></div>
+          <div class="row"><div class="lab">落地形态</div><div class="val">原创世界观 + 国产备案模型 + 乙游式抽卡/章节解锁，生成内容可收藏成卡/印谷子</div></div>
+        </div>
+
+        <div class="mx mid">
+          <h4>影视 / AI 互动叙事</h4>
+          <div><div class="stars"><span class="on">★★★</span><span class="off">★★</span></div><div class="grade">中</div></div>
+          <div class="row opp"><div class="lab">机会</div><div class="val">微短剧<b>千亿红利</b>验证爽感大盘 + 网文 IP 读者侧互动是平台空白 + AI 文字/秒级配图供给成熟、成本<b>国际 1/10</b></div></div>
+          <div class="row red"><div class="lab">红线</div><div class="val">互动剧"被动观看惯性"<b>全球已证伪</b>（Netflix 2024 放弃 24 部留 4 部）/ 广电微短剧备案</div></div>
+          <div class="row"><div class="lab">落地形态</div><div class="val">文字+实时配图为主，绑网文 IP，锁定年轻互动叙事圈层；实时视频作远期项不押注</div></div>
+        </div>
+
+        <div class="mx low">
+          <h4>心理健康</h4>
+          <div><div class="stars"><span class="on">★★</span><span class="off">★★★</span></div><div class="grade">C端低 / B端中</div></div>
+          <div class="row opp"><div class="lab">机会</div><div class="val">可及性缺口真实：抑郁终生患病 <b>6.8%</b>、仅 <b>9.5%</b> 就诊、治疗师仅 <b>7000 人</b></div></div>
+          <div class="row red"><div class="lab">红线</div><div class="val">医疗<b>三道墙</b>（精神卫生法+互联网诊疗+NMPA 三类证）/ 拟人化新规对此品类咬最死</div></div>
+          <div class="row"><div class="lab">落地形态</div><div class="val"><b>放弃 C 端娱乐陪伴</b>，走 B 端学校/EAP 非医疗筛查/CBT 练习/风险预警，严守"不诊断、必转介"</div></div>
+        </div>
+
+        <div class="mx no">
+          <h4>角色陪伴本体（直接搬 Crack）</h4>
+          <div><div class="stars"><span class="on">★</span><span class="off">★★★★</span></div><div class="grade">最低 · 不可行</div></div>
+          <div class="row red"><div class="lab">红线</div><div class="val"><b>四重法律风险叠加</b>：刑事（涉黄制作）+ 行政（备案缺失/约谈下架）+ 新规（7.15 拟人化）+ 数据出境</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="redlines">
+      <h2 class="sec">HARD CONSTRAINTS</h2>
+      <h3 class="title">贯穿所有方向的 6 条硬红线</h3>
+      <p class="intro">无论切哪个方向，以下是入华的"公共关卡"，每条都有【确证】的法规或判例支撑。</p>
+      <div class="reds">
+        <div class="red"><div class="num">1</div><h4>双备案，3-6 个月</h4><p>大模型登记 + 算法备案，省级初审→国家终审；<b>未备案不得面向公众上线</b>。</p></div>
+        <div class="red"><div class="num">2</div><h4>必须接国产备案模型</h4><p>调用 OpenAI/Claude/Gemini 对公众服务=<b>违法经营</b>（已有中转站站长被刑拘）；<b>Wrtn 多模型路由核心卖点直接作废</b>；Anthropic 2025.9 起还明文禁中资用 Claude。</p></div>
+        <div class="red"><div class="num">3</div><h4>拟人化新规 2026-07-15</h4><p>禁向未成年人提供"虚拟伴侣/虚拟亲属"；禁"诱导情感依赖/沉迷"内容；连续使用每超 <b>2 小时强制弹窗</b>——正打在 Wrtn"日均 2 小时"卖点上。</p></div>
+        <div class="red"><div class="num">4</div><h4>AI 内容标识（已执法）</h4><p>2025-09 起，生成的小说/图/音须<b>显式标识 + 隐式水印</b>，禁删改隐匿。</p></div>
+        <div class="red"><div class="num">5</div><h4>擦边 = 刑事</h4><p>首例 AI 陪伴涉黄案（AlienChat），上海徐汇法院 2025.9 一审，运营者以"制作淫秽物品牟利罪"获刑 <b>4 年/1.5 年</b>；越狱系统提示词被当定罪证据，<b>平台被认定为淫秽物制作者</b>。</p></div>
+        <div class="red"><div class="num">6</div><h4>外资 ToC 无牌照</h4><p>ICP 外资股比 ≤50%，社区/即时交互类 ICP 至今不对外资开放；境外主体不能纯境外备案。<b>无任何韩国 ToC 入华成功先例</b>（LINE/KakaoTalk 均被阻断）。</p></div>
+      </div>
+    </section>
+
+    <section id="paths">
+      <h2 class="sec">RECOMMENDATION</h2>
+      <h3 class="title">推荐路径排序</h3>
+      <div class="paths">
+        <div class="path p1">
+          <div class="badge">首选<br>①</div>
+          <div>
+            <h4>原创世界观女性向 AI 乙女/CP 互动叙事</h4>
+            <p>用户当女主，AI 实时生成专属恋爱/CP 剧情（文字+图+音），乙游式抽卡变现。<b style="color:var(--good)">避红线</b>（原创角色绕开真人+未授权IP）· <b style="color:var(--good)">接需求</b>（命中晋江/AO3/乙游供给真空人群）· <b style="color:var(--good)">可变现</b>（ARPU 对标《恋与深空》而非 9.99 订阅）· <b style="color:var(--good)">站赋能创作者一边</b>避社区反噬。</p>
+          </div>
+        </div>
+        <div class="path p2">
+          <div class="badge">次选<br>②</div>
+          <div>
+            <h4>网文 IP 官方授权的读者侧 AI 互动</h4>
+            <p>"玩你读过的小说"。绑阅文/B 站，借海量 IP+用户+短剧分发管线。窗口正在打开（阅文 AI 漫剧已破亿、米哈游 Anuttacon 做 AI 原生游戏），但授权周期长、IP 方对角色对话授权谨慎。</p>
+          </div>
+        </div>
+        <div class="path p3">
+          <div class="badge">B端<br>③</div>
+          <div>
+            <h4>心理健康做学校/EAP 非医疗筛查陪伴</h4>
+            <p>用 AI 陪伴产品力做标准化筛查/情绪陪伴/CBT 练习/风险预警，严守"非医疗、不诊断、必转介"+ 危机干预 + 未成年模式。学校政策有刚性配比。聆心智能 2024-10 已关停 ToC 转 B 端，是验证。</p>
+          </div>
+        </div>
+        <div class="path px">
+          <div class="badge">不碰<br>✕</div>
+          <div>
+            <h4>四个高危区</h4>
+            <p>真人明星 AI 分身（红线最密）· 擦边/BL 成人题材（刑事）· 纯 C 端深度娱乐陪伴（撞未成年保护+赛道退潮）· 境外模型路由（违法）。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="headwind">
+      <h2 class="sec">MARKET HEADWIND</h2>
+      <h3 class="title">为什么不能简单乐观（市场层面）</h3>
+      <p class="intro">即便绕过法律，商业层面也有逆风，均为【确证】：</p>
+      <ul class="clean">
+        <li>中国同类产品 2025-2026 <b>集体退潮</b>：星野苹果端月下载 486万→93万、猫箱 264万→61万；三日留存普遍<b>跌破 20%</b>；冒泡鸭等已停运</li>
+        <li><b>变现困难</b>：Character.AI ARPU 仅 0.72 美元；出海头部"年营收千万美金是赛道最大谎言"，投流 ROI"从未打正"</li>
+        <li><b>微短剧用户 ≠ Wrtn 用户</b>：微短剧是被动观看（看别人逆袭、下沉/银发为主），Wrtn 是主动操控（自己当主角）；可借"爽感心智+小额高频付费习惯"，但不能直接吃红果 6.96 亿下沉盘</li>
+        <li>头部 10% 拿走 89% 收入，近 70% 心理类机构亏损、C 端付费意愿 &lt;10%</li>
+      </ul>
+    </section>
+
+    <section id="corrections">
+      <h2 class="sec">FACT-CHECK</h2>
+      <h3 class="title">原始画像纠错（4 路调研发现）</h3>
+      <table>
+        <tr><th>原始假设</th><th>核实结论</th></tr>
+        <tr><td>Glow/X Eva 背后是聆心智能</td><td><span class="wrong">错</span> 是 <b>MiniMax</b>（星野前身，2022.10 上线，2023.3 因擦边下架）</td></tr>
+        <tr><td>Crack 路由 = OpenAI/Claude/Gemini 并列</td><td><span class="wrong">部分错</span> Crack 角色聊天以 <b>Claude（Haiku/Sonnet/Opus）+ Gemini</b> 为主，按付费档绑定；OpenAI 主要用在母产品 Wrtn</td></tr>
+        <tr><td>日均 2h / 留存 &gt;70% / 14 题材</td><td><span class="wrong">宣传口径</span> 2 小时实为竞品 <b>Zeta(Scatter Lab)</b> 数字；&gt;70% 是韩国赛道口径；14 题材无公开实证。ARR 实为 <b>~$7000万</b>（"破亿"是预测、未审计）</td></tr>
+        <tr><td>"角色可消失规避情感依赖"是安全设计</td><td><span class="wrong">查无实据</span> 官方反向操作（强记忆+主动发消息，韩国用户对单角色累计 <b>1000+ 小时</b>）。Replika 移除伴侣人格证明"消失"是伤害放大器。<span class="right">只能当营销话术，不能写进安全设计卖点</span></td></tr>
+      </table>
+    </section>
+
+    <section id="conclusion">
+      <h2 class="sec">CONCLUSION</h2>
+      <h3 class="title">战略结论</h3>
+      <div class="note warn">
+        <b>对 Wrtn 这家公司</b>：入华做 ToC 直营性价比极低——要么法律走不通，要么把核心卖点全部阉割后与国产存量竞品同质化竞争一个退潮市场。<b>更务实的是 ToB 技术/IP 授权，或专注海外</b>（它本就 2026 进军美国）。
+      </div>
+      <div class="note good">
+        <b>对"我们想借鉴这套模式在中国做"</b>：唯一值得押注的是<b>第一条路——原创世界观女性向 AI 互动叙事</b>，合规先行、国产备案模型、去擦边、乙游式变现、赋能创作者。这是四路调研里唯一"<b>需求最强 × 红线可控 × 变现有对标</b>"三者同时成立的细分。
+      </div>
+    </section>
+
+    <footer>
+      Wrtn 模式入华可扩展性 · 2026-06-25 · 4 路并行调研（角色叙事+监管 / 粉丝经济乙女 / 影视微短剧 / 心理健康）+ 对抗式核查<br>
+      关键监管/判例经网信办、新华网、法院判决书核验 · 详细来源见各分项调研记录 · 仅供内部研究参考
+    </footer>
+  </main>
+</div>
+<script>
+  const links=[...document.querySelectorAll('nav.side a.navi')];
+  const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+  const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a)a.classList.add('on');}});},{rootMargin:'-20% 0px -70% 0px',threshold:0});
+  document.querySelectorAll('section[id]').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
