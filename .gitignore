@@ -1,4 +1,6 @@
 .DS_Store
+.memory/
+worklog.json
 web/.playwright-mcp/
 *.log
 node_modules/
