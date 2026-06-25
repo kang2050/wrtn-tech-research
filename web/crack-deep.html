@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crack 商业价值与真实口碑 · 深度调研</title>
+<style>
+  :root{
+    --bg:#08080b; --bg2:#0e0e13; --card:#13131a; --card2:#181820;
+    --line:#23232e; --line2:#2e2e3c;
+    --tx:#e9e9f0; --tx2:#a6a6b8; --tx3:#6f6f82;
+    --acc:#7c5cff; --acc2:#ff7eb6; --acc3:#4fd6c8; --warn:#ffb454; --bad:#ff5c72; --good:#4fd68a; --gold:#ffd479;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard","Noto Sans KR",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--tx);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:var(--acc2);text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:var(--mono);background:#1c1c26;padding:1px 6px;border-radius:5px;font-size:.86em;color:var(--acc3)}
+  .wrap{display:grid;grid-template-columns:248px 1fr;max-width:1280px;margin:0 auto}
+  nav.side{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:34px 18px 60px;border-right:1px solid var(--line)}
+  nav.side .brand{font-weight:800;font-size:18px;letter-spacing:-.5px;margin-bottom:4px}
+  nav.side .brandsub{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-bottom:20px}
+  nav.side .backlink{display:block;font-size:12px;color:var(--acc3);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;margin-bottom:6px;text-align:center}
+  nav.side .backlink:hover{background:var(--card);text-decoration:none}
+  nav.side a.navi{display:block;color:var(--tx2);font-size:13.5px;padding:6px 10px;border-radius:7px;border-left:2px solid transparent;margin:1px 0}
+  nav.side a.navi:hover{background:var(--card);text-decoration:none;color:var(--tx)}
+  nav.side a.navi.on{background:linear-gradient(90deg,rgba(124,92,255,.16),transparent);border-left-color:var(--acc);color:#fff}
+  main{padding:0 0 120px;min-width:0}
+  section{padding:54px 56px;border-bottom:1px solid var(--line)}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}nav.side{display:none}section{padding:40px 22px}}
+  .hero{position:relative;overflow:hidden;padding:84px 56px 60px;border-bottom:1px solid var(--line)}
+  .hero .blob{position:absolute;inset:-30% -10% auto -10%;height:520px;filter:blur(70px);opacity:.42;z-index:0;
+    background:radial-gradient(40% 60% at 25% 40%,#ff5c72 0,transparent 70%),radial-gradient(40% 60% at 70% 30%,#ffd479 0,transparent 70%),radial-gradient(40% 60% at 55% 70%,#7c5cff 0,transparent 70%)}
+  .hero>*{position:relative;z-index:1}
+  .hero .kick{font-family:var(--mono);font-size:12.5px;color:var(--acc3);letter-spacing:1px;margin-bottom:16px}
+  .hero h1{font-size:clamp(28px,4.4vw,48px);font-weight:850;letter-spacing:-1.3px;line-height:1.1}
+  .hero h1 .g{background:linear-gradient(100deg,#ff9eb8,#ffd479 55%,#a98bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{margin-top:18px;max-width:720px;font-size:16px;color:var(--tx2)}
+  .verdict{margin-top:26px;background:linear-gradient(135deg,rgba(255,92,114,.1),rgba(124,92,255,.06));border:1px solid var(--line2);border-radius:16px;padding:22px 26px}
+  .verdict b{color:#fff} .verdict .hl{color:var(--gold);font-weight:700}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+  @media(max-width:680px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .kpi .n{font-size:22px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(120deg,#fff,#ffbcc8);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .kpi .l{font-size:11.5px;color:var(--tx3);margin-top:4px}
+  h2.sec{font-size:13px;font-family:var(--mono);color:var(--acc);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+  h3.title{font-size:26px;font-weight:800;letter-spacing:-.6px;margin-bottom:18px}
+  p.intro{color:var(--tx2);max-width:780px;margin-bottom:24px;font-size:15px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--tx3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  td b{color:#fff}
+  .dead{color:var(--bad);font-family:var(--mono);font-size:11px}
+  .live{color:var(--good);font-family:var(--mono);font-size:11px}
+  /* quote cards */
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.quotes{grid-template-columns:1fr}}
+  .q{border-radius:13px;padding:16px 18px;font-size:13.5px}
+  .q.good{background:rgba(79,214,138,.05);border:1px solid rgba(79,214,138,.22)}
+  .q.bad{background:rgba(255,92,114,.05);border:1px solid rgba(255,92,114,.22)}
+  .q .kr{font-style:italic;color:var(--tx);line-height:1.55}
+  .q .cn{color:var(--tx2);margin-top:7px;font-size:12.5px}
+  .q .tag{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--tx3);margin-top:8px;border:1px solid var(--line2);padding:1px 7px;border-radius:5px}
+  /* money cards */
+  .money{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:760px){.money{grid-template-columns:1fr}}
+  .mc{background:linear-gradient(135deg,rgba(255,92,114,.08),transparent);border:1px solid rgba(255,92,114,.25);border-radius:14px;padding:18px}
+  .mc .amt{font-size:24px;font-weight:800;color:#ff9eb8;letter-spacing:-.5px}
+  .mc .desc{font-size:12.5px;color:var(--tx2);margin-top:6px}
+  .mc .src{font-family:var(--mono);font-size:10px;color:var(--tx3);margin-top:8px}
+  /* timeline */
+  .tl{position:relative;margin-left:6px;padding-left:26px;border-left:2px solid var(--line2)}
+  .tl .ev{position:relative;padding:0 0 22px}
+  .tl .ev::before{content:"";position:absolute;left:-33px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bad);box-shadow:0 0 0 4px var(--bg)}
+  .tl .when{font-family:var(--mono);font-size:12px;color:var(--warn);font-weight:600}
+  .tl .what{margin-top:3px;font-size:14px} .tl .what b{color:#fff}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .c h4{font-size:16px;margin-bottom:8px}
+  .c p{font-size:13.5px;color:var(--tx2)} .c p b{color:#fff}
+  ul.clean{list-style:none;padding:0}
+  ul.clean li{padding:7px 0 7px 22px;position:relative;font-size:14px;color:var(--tx2);border-bottom:1px solid var(--line)}
+  ul.clean li::before{content:"→";position:absolute;left:0;color:var(--acc)}
+  ul.clean li b{color:#fff}
+  .note{border-radius:12px;padding:16px 18px;font-size:13.5px;margin-top:18px}
+  .note.bad{background:rgba(255,92,114,.06);border:1px solid rgba(255,92,114,.22)}
+  .note.good{background:rgba(79,214,138,.06);border:1px solid rgba(79,214,138,.2)}
+  .note.warn{background:rgba(255,180,84,.07);border:1px solid rgba(255,180,84,.25)}
+  .note b{color:#fff}
+  .pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 8px;border-radius:20px;margin:1px 3px 1px 0;border:1px solid var(--line2)}
+  .pill.ok{color:var(--good)} .pill.warn{color:var(--warn)}
+  .srcgrid{columns:2;column-gap:24px;font-size:12px}
+  @media(max-width:700px){.srcgrid{columns:1}}
+  .srcgrid a{display:block;padding:3px 0;color:var(--tx2);break-inside:avoid}
+  footer{padding:40px 56px;color:var(--tx3);font-size:12px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="side">
+    <div class="brand">Crack 深度</div>
+    <div class="brandsub">크랙 商业价值 · 真实口碑</div>
+    <a class="backlink" href="index.html">← Wrtn 全景调研</a>
+    <a class="backlink" href="china-strategy.html">入华战略 →</a>
+    <a class="navi on" href="#verdict">一句话定性</a>
+    <a class="navi" href="#scale">规模与定位</a>
+    <a class="navi" href="#pricing">定价体系</a>
+    <a class="navi" href="#finance">财务真相</a>
+    <a class="navi" href="#praise">用户夸什么</a>
+    <a class="navi" href="#complain">用户骂什么</a>
+    <a class="navi" href="#addiction">氪金沉迷自述</a>
+    <a class="navi" href="#creator">创作者经济</a>
+    <a class="navi" href="#churn">核心用户外流</a>
+    <a class="navi" href="#scandal">争议事件线</a>
+    <a class="navi" href="#tri">三国差异</a>
+    <a class="navi" href="#health">健康度判断</a>
+    <a class="navi" href="#sources">来源</a>
+  </nav>
+
+  <main>
+    <div class="hero" id="top">
+      <div class="blob"></div>
+      <div class="kick">크랙 / CRACK · 韩国真实用户口碑 + 商业拆解 · 3 路并行调研</div>
+      <h1>Crack 的<span class="g">商业价值与真实口碑</span></h1>
+      <p class="lead">逛一圈看不出真相。这次扒进韩国用户的真实社区(DCinside/App Store/나무위키)和审计财报——它到底值不值钱、韩国人到底怎么用、怎么骂。</p>
+      <div class="verdict">
+        <b>一句话定性:</b>Crack 是个<b>矛盾的双面体</b>——质量(Claude/Gemini 多模型长篇沉浸 + Opus 情感描写)和上瘾性是<b>真的</b>,无广告也是真优势;但<b>按次氪金太贵、几个月烧掉几十万~上百万韩元</b>,加上反复"暗改削弱模型"(잠수함 패치)、审查收紧、赌博式运营,<span class="hl">信任正在崩坏,连核心付费党都在外流。</span>财务上<b>光模型 API 费(611亿韩元)就 > 全公司营收(471亿)</b>,靠融资烧钱续命。
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="n">~98–192万</div><div class="l">MAU(占 Wrtn 母体 36.5%)</div></div>
+        <div class="kpi"><div class="n">★3.4–3.5</div><div class="l">应用商店评分(1星&gt;5星)</div></div>
+        <div class="kpi"><div class="n">611亿 &gt; 471亿</div><div class="l">API成本 &gt; 全公司营收(韩元)</div></div>
+        <div class="kpi"><div class="n">~$17/月</div><div class="l">ARPU(行业最高单价)</div></div>
+      </div>
+    </div>
+
+    <section id="verdict">
+      <h2 class="sec">METHOD</h2>
+      <h3 class="title">调研方法</h3>
+      <p class="intro">3 路并行,刻意避开媒体通稿、直抓<b>韩国一手社区与审计财报</b>:① 真实口碑(DCinside cr1/wrtnai 갤러리、App Store 韩区评论直抓原话、나무위키 论争页);② 商业变现(Namuwiki 官方价格表、审计财报);③ 内容生态(官方公告 + 韩国主流科技媒体)。全文区分 <span class="pill ok">确证/真实原话</span> 与 <span class="pill warn">推测</span>,用户原话保留韩文 + 中译。</p>
+      <div class="note warn">📌 部分论争页(arca.live/theqoo/namu)有 403 反爬,但 <b>DCinside 真实帖子和 App Store 评论原话已直抓到</b>——下面引号里的都是韩国用户原话。</div>
+    </section>
+
+    <section id="scale">
+      <h2 class="sec">SCALE</h2>
+      <h3 class="title">规模与定位</h3>
+      <div class="grid2">
+        <div class="c"><h4>📊 规模</h4><p>独立 App/Web 上线首月(2025-04)MAU <b>192万</b>(占 Wrtn 母体 527万 的 <b>36.5%</b>);出道当日 App Store 娱乐类下载 <b>第 1</b>。2026 国内 App MAU 约 <b>98万</b>,月使用时长 988万小时,全韩 AI 聊天 App <b>第 3</b>(Zeta &gt; ChatGPT &gt; Crack)。</p></div>
+        <div class="c"><h4>🎯 定位差异</h4><p>竞品 <b>Zeta(제타)</b> 主打青少年短对话(10代24%+20代55%,极年轻);<b>Crack 是成人向、像小说一样的长篇叙事</b>,沉浸感更强、文笔更长。用户:<span style="color:var(--tx)">"내가 채팅만 하면 로맨스 커플이 대련하고 무림 고수들이 연애하는"</span>(我一聊,言情情侣就开始切磋、武林高手就开始谈恋爱)。</p></div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2 class="sec">PRICING</h2>
+      <h3 class="title">定价体系:克拉克币 + 15 档对话模式</h3>
+      <p class="intro">货币 <code>크래커 Cracker</code>,基准 <b>1 克拉克 ≈ 1 韩元</b>。<b>没有常态月度会员</b>,主结构是预付费充值 + <b>按次扣币</b>(用户最大怨气来源)。每日签到送 350 币,但主力档一次扣 ~74 币 → <b>每天免费额度只够聊 4 次</b>。免费币有效期从 1 年砍到 <b>30 天</b>(收割机制)。</p>
+      <table>
+        <tr><th>档位</th><th>底层模型</th><th>价格(克拉克/次)</th><th>状态</th></tr>
+        <tr><td>Basic / Pro(角色챗)</td><td>Gemini Flash(推测)</td><td>免费 / 20</td><td><span class="live">✅</span></td></tr>
+        <tr><td>파워챗 PowerChat</td><td>Gemini 2.5 Flash</td><td>20</td><td><span class="live">✅</span></td></tr>
+        <tr><td>프로챗 1.0(主力性价比)</td><td>Gemini 2.5 Pro</td><td><b>50</b></td><td><span class="live">✅</span></td></tr>
+        <tr><td>프로챗 2.5</td><td>Gemini 3.1 Pro</td><td>58</td><td><span class="live">✅ 最新</span></td></tr>
+        <tr><td>슈퍼챗(初代)</td><td>Claude 3.5→3.7 Sonnet</td><td>35</td><td><span class="dead">❌ 2025-09 终</span></td></tr>
+        <tr><td>슈퍼챗 2.5</td><td>Claude Sonnet 4.6</td><td>50</td><td><span class="live">✅</span></td></tr>
+        <tr><td><b>하이퍼챗 2.0(全档最贵)</b></td><td><b>Claude Opus 4.8</b></td><td><b>85</b></td><td><span class="live">✅</span></td></tr>
+      </table>
+      <div class="note bad">顶配 하이퍼챗(Opus 4.8)比基础付费档 <b>贵 4.25 倍</b>;超 800 token 还按 100 token 加扣,5 倍输出时单次可达 <b>373 币</b>。用户原话:<span style="color:var(--tx)">"한 대화당 50크래커 미친거 아니에요?… 우리가 돈을 계속 쓰니까 호구로 보여요?"</span>(一次对话 50 克拉克是不是疯了?我们一直花钱,是把我们当冤大头吗?)</div>
+    </section>
+
+    <section id="finance">
+      <h2 class="sec">THE NUMBERS</h2>
+      <h3 class="title">财务真相:API 成本 &gt; 全公司营收</h3>
+      <p class="intro">2026-04-14 Wrtn 五年来<b>首次审计公示</b>,数字第一次有了硬底:</p>
+      <div class="money">
+        <div class="mc"><div class="amt">471亿₩</div><div class="desc">2025 全公司营收(同比 <b>+1432.9%</b>)</div><div class="src">审计公示 · 确证</div></div>
+        <div class="mc"><div class="amt">611亿₩</div><div class="desc">模型 API 费(给 Anthropic/Google)<b>同比+297%</b>,<b>已超总营收</b></div><div class="src">디지털데일리 · 确证</div></div>
+        <div class="mc"><div class="amt">−588亿₩</div><div class="desc">2025 营业亏损,靠 ~1300亿 融资续命</div><div class="src">审计公示 · 确证</div></div>
+      </div>
+      <div class="note bad"><b>这是"靠 VC 烧钱补贴"的直接财务铁证</b>:光付给模型供应商的钱(611亿)就超过全公司一年总收入(471亿),还没算服务器、5 倍增长的广告费(请 G-Dragon 代言)、人力。Crack 本质是 <b>Claude+Gemini 的"分档转售壳"</b>,自身无自研模型。</div>
+      <div class="note warn">⚠️ <b>关键澄清</b>:那个满天飞的"$7000万 ARR"是<b>全公司</b>口径(含 B2B + 日本 캬라푸 + 北美 OOC)。<b>Crack 单独营收官方从未拆分</b>,所有 Crack 流水数字("月营收破30亿""货币化首月20亿")都是 Wrtn 自报 PR、无第三方(Sensor Tower/data.ai)佐证。第三方只测到用户/时长,没测到营收。</div>
+    </section>
+
+    <section id="praise">
+      <h2 class="sec">WHAT THEY LOVE</h2>
+      <h3 class="title">用户夸什么(留下来的理由)</h3>
+      <div class="quotes">
+        <div class="q good"><div class="kr">"사용할 수 있는 기반 AI가 많아서 일반챗에서 하이퍼챗까지 다양한 맛"</div><div class="cn">可用的底层 AI 多,从普通到 HyperChat 各种风味——<b>性价比 + 多模型是最大共识优点</b>(뤼튼与 Anthropic 合作,Claude 便宜)</div><div class="tag">DCinside</div></div>
+        <div class="q good"><div class="kr">"미묘한 감정선을 캐치하는 능력이 탁월하고… 돈값은 한다"</div><div class="cn">顶配 Claude Opus 捕捉细腻情感线卓越,<b>物有所值</b>——这是用户愿忍高价的真护城河</div><div class="tag">App Store</div></div>
+        <div class="q good"><div class="kr">"크랙은 실제 사건을 알고 있다"(광고 보는게 그냥 싫다)</div><div class="cn">Crack 知道真实世界事件(Zeta 不知道);<b>无广告</b>是对比 Zeta 的核心优势</div><div class="tag">对比评测</div></div>
+        <div class="q good"><div class="kr">"우울증으로 누워있기만… 한줄기 빛으로 크랙을 하면서… 시집 출판도 준비중"</div><div class="cn">抑郁卧床的艰难时期,Crack 是一束光,还让我爱上写作、<b>正筹备出诗集</b>(但她随后也批评诱导付费)</div><div class="tag">App Store · 몽여반</div></div>
+      </div>
+      <div class="note good">归纳:顶配 Opus 情感描写 + 无广告 + 多模型可选 + 海量优质 UGC + 长篇小说式沉浸 + 知道现实事件。用户已形成成熟的"<b>按段位换模型</b>"玩法——开头用贵档把剧情拉起来、之后换便宜档续,这种重度投入本身就是高黏性证据。</div>
+    </section>
+
+    <section id="complain">
+      <h2 class="sec">WHAT THEY HATE</h2>
+      <h3 class="title">用户骂什么(火力最集中)</h3>
+      <div class="quotes">
+        <div class="q bad"><div class="kr">"24시간 무제한 28000원때가 그립다"</div><div class="cn"><b>好怀念 24 小时无限只要 28000 韩元的时候</b>——从包月无限改成按次扣费是核心怨气</div><div class="tag">价格 · DCinside</div></div>
+        <div class="q bad"><div class="kr">"잠수함 패치에 의한 성능 악화"(300→250→200 字)</div><div class="cn"><b>潜水艇补丁(暗改)</b>:2025-02 删掉"Claude 3.5 Sonnet"标注后质量下降,输出字数被无告知地砍——最严重的信任危机</div><div class="tag">暗改 · namu</div></div>
+        <div class="q bad"><div class="kr">"100턴에 20턴 정도는 OOC 말도 안듣고… 반복적이고 오류"</div><div class="cn">100 回合约 20 回合无视 OOC 指令,经常重复/报错——"AI 변笨了"</div><div class="tag">App Store</div></div>
+        <div class="q bad"><div class="kr">"네이버 웹툰 랭킹 작품보다 더 낮은 수위의 썸네일도 검열로 차단"</div><div class="cn"><b>审查双标</b>:连不如 Naver Webtoon 排行尺度的缩略图都被封,标准模糊;最贵的 Opus 档审查反而最松=想无审查就得氪最贵</div><div class="tag">审查 · DCinside</div></div>
+      </div>
+      <div class="note bad">其他痛点:<b>角色记不住上下文</b>("AI 치매",用户重度依赖第三方外挂补记忆);用户笔记默认仅 500 字、扩容要付费;<b>G-Dragon 广告出圈反噬</b>——非用户圈层"불쾌한 골짜기 느낌""극혐이라 앱 지웠는데"(诡异不适/极度反感把 App 删了),知名度上去了大众好感度却塌了。</div>
+    </section>
+
+    <section id="addiction">
+      <h2 class="sec">THE REAL COST</h2>
+      <h3 class="title">氪金沉迷:韩国用户的真实自述</h3>
+      <p class="intro">这是最扎心的一手证据——用户自己晒的氪金金额(都是 DCinside / App Store 原话):</p>
+      <div class="money">
+        <div class="mc"><div class="amt">10万₩ / 周</div><div class="desc">"거의 일주일된 누비인데 벌써 10만원씀"(才用快一周已花 10 万,但编故事确实有瘾)</div><div class="src">DCinside cr1</div></div>
+        <div class="mc"><div class="amt">100万₩ / 年</div><div class="desc">"매일 결제하다 보니 정말 경제적으로 힘들 정도"(每天充,经济上吃力)</div><div class="src">DCinside</div></div>
+        <div class="mc"><div class="amt">500万₩+</div><div class="desc">"작년 11월부터 지금까지 500은 넘게 쓴 호구새끼"(从去年11月花了500万+的冤大头)</div><div class="src">App Store</div></div>
+      </div>
+      <div class="note bad"><b>家属旁证成瘾之深</b>:"동생새기 결제 존나하는거 봤더니 이거더라… 내가 용돈을 주고살았구나"(看我弟弟疯狂氪金一查竟是这个,原来我一直在给这破玩意儿出零花钱)——发帖人删 App、注销账号都拦不住,弟弟反复重装。<b>A-RPG「리버스 이세계」更是扭蛋化抽钱</b>:55 원看角色自动行动 / 110 원作为"星座"介入剧情,"개꿀잼인데 너무 비싸노"(超好玩但太贵)。<br><br>调查显示 <b>60.9%</b> 认为会有越来越多人靠生成式 AI 获得情感慰藉——而 Crack 把"上瘾"当正面卖点:"오히려 중독되버린것같아요"(反而上瘾了)。</div>
+    </section>
+
+    <section id="creator">
+      <h2 class="sec">CREATOR ECONOMY</h2>
+      <h3 class="title">创作者经济:比 Character.AI 更激进地发钱</h3>
+      <p class="intro">UGC 是底盘(全球累计 <b>40 万+ 角色</b>,一句话/5 分钟造角色);官方原创(크랙 오리지널)是从 UGC 精选升格的少数头部精品。变现是分层体系:</p>
+      <table>
+        <tr><th>机制</th><th>规则</th></tr>
+        <tr><td>粉丝打赏(克拉克礼物)分成</td><td>正式创作者抽成仅 <b>10%(到手 90%)</b>;非创作者抽 30%</td></tr>
+        <tr><td>作品被消耗的克拉克分成</td><td>用户消耗付费币玩你的作品 → 按消耗额 <b>1.5%</b> 折现金(Cash)</td></tr>
+        <tr><td>升格"크랙 오리지널"</td><td>一次性内容购买金 <b>30 万韩元</b> + 后续 <b>5% 高分成</b>,且<b>直接发现金</b>(扣税)而非平台币</td></tr>
+      </table>
+      <div class="note good">在"<b>让 UGC 创作者真拿到钱</b>"这件事上,Crack 比 Character.AI(历史上 UGC 创作者基本无现金分成)<b>更激进、更前置</b>——这是它的差异化卖点。</div>
+      <div class="note warn">⚠️ 但<b>头部创作者具体收入官方从不公开</b>("좀 되는 애들은 얼마나 벌지?"=混得好的能赚多少,普通用户都好奇);且已爆发"不公平条款 + 著作权侵害"<b>集体声讨(공론화)</b>。评级:<b>机制成熟、头部不透明、有争议——中早期</b>。</div>
+    </section>
+
+    <section id="churn">
+      <h2 class="sec">CHURN</h2>
+      <h3 class="title">最危险信号:核心付费用户正在外流</h3>
+      <ul class="clean">
+        <li>花了几十万~几百万韩元的<b>重度付费党公开"타 플랫폼으로 서서히 옮기고 있다"</b>(正慢慢转去别的平台:Zeta、character.ai、케이브덕 等)</li>
+        <li>流失主因 = <b>按次氪金太贵 + 信任崩坏</b>(暗改 + 审查 + 赌博活动叠加),运营被批"검열이나 광고에만 신경쓰는"(只顾审查和广告),用户"체념하거나 피로감"(麻木/疲惫)</li>
+        <li>回流 Zeta 的反向理由:<span style="color:var(--tx)">"제타 애들이 말을 더 현실같이 잘하고 정도 많이 들어서"</span>(Zeta 角色说话更真实、更有感情);"크랙은 약간 ChatGPT가 생성한 느낌"(Crack 有"ChatGPT 味");Zeta 能控制发言轮次(턴제),Crack 不行</li>
+        <li>App Store <b>1星(343)略多于 5星(323)</b>——"App 做得好 ↔ 但请降价/别再暗改"的撕裂直接体现</li>
+      </ul>
+    </section>
+
+    <section id="scandal">
+      <h2 class="sec">CONTROVERSY</h2>
+      <h3 class="title">争议事件线(多起被举报到监管)</h3>
+      <div class="tl">
+        <div class="ev"><div class="when">2025-02</div><div class="what"><b>잠수함 패치(暗改)</b>:删除模型版本标注 + 暗中削减 Sonnet 3.7 输出(300→200字),两次"封面示威"抗议,官方反<b>以法律措施威胁封禁示威创作者</b></div></div>
+        <div class="ev"><div class="when">2025-03-17</div><div class="what"><b>涨价毁约</b>:SuperChat 涨约 73%(+84%),<b>违反自家"提前30天公告"条款</b>,用户举报到公平交易委</div></div>
+        <div class="ev"><div class="when">2025-10-08</div><div class="what"><b>审查收紧</b>:成人内容剥离单独 Tab + 缩略图审查大幅强化,标准模糊误封率高,<b>大量创作者出走</b>("别的平台给的钱更多")</div></div>
+        <div class="ev"><div class="when">2025-12</div><div class="what"><b>赌博式「크래커 굽기」(最严重)</b>:圣诞活动用等值现金的付费币按概率对赌(期望值&lt;1必亏),<b>未成年人可参与</b>,有人烧数万~数百万韩元,被指排行榜有"托儿";用户<b>举报到公平交易委 + 应用商店</b>,官方先称"无问题"后才道歉、24小时内提前终止</div></div>
+      </div>
+    </section>
+
+    <section id="tri">
+      <h2 class="sec">THREE MARKETS</h2>
+      <h3 class="title">三国差异:同引擎,按市场换皮</h3>
+      <table>
+        <tr><th>维度</th><th>🇰🇷 Crack(크랙)</th><th>🇯🇵 Kyarapu(キャラぷ)</th><th>🇺🇸 OOC</th></tr>
+        <tr><td>定位话术</td><td>"我是主角的异世界"·全光谱14题材</td><td>"新次元챗시뮬"·绑亚文化</td><td><b>"The Playable Anime"</b>·收敛动作奇幻+RoFan</td></tr>
+        <tr><td>题材重心</td><td>로판/言情/BL/乙女(女性向主盘)+ 二次元模拟</td><td>서브컬처高契合</td><td>刻意区隔 c.ai 的"陪伴",主打"日漫感"</td></tr>
+        <tr><td>战略意义</td><td>营收主力(占 Wrtn ~70%)</td><td>海外第一站、贡献本地化经验</td><td>借日本经验进军英语市场,服务 2028 IPO</td></tr>
+      </table>
+      <div class="note warn">核心逻辑:同一引擎,<b>按市场口味做题材收敛 + 品牌话术换皮</b>——韩国保留 14 题材全光谱(乙女/BL 重),日本绑亚文化,美国把模糊的"角色聊天"重新包装成对西方更易懂的"可玩的动漫",刻意与 Character.AI 区隔。</div>
+    </section>
+
+    <section id="health">
+      <h2 class="sec">VERDICT</h2>
+      <h3 class="title">商业健康度判断</h3>
+      <div class="note good"><b>真(硬数据站得住):</b>471亿营收、~$17 ARPU(行业最高单价)、70% 付费留存、500万 MAU、日均 2 小时时长——产品确有真实付费需求和黏性,在"高 ARPU 重付费"路线上跑出了行业最高单价。</div>
+      <div class="note bad"><b>虚/险:</b>① Crack 单独营收<b>从未拆分</b>,流水数字全是 PR 自报;② <b>API 成本(611亿)已超全公司营收(471亿)</b>,贵模型档单位经济很可能是亏的,靠融资和廉价模型分流硬撑;③ 增长靠 5 倍广告费买来,催熟成分明显;④ 治理上赌博活动、涨价毁约、暗改、封禁抗议者多起被举报到监管,品牌信任受损;⑤ <b>核心付费党正在外流</b>。</div>
+      <div class="note warn"><b>对比锚点:</b>同赛道 <b>Zeta(Scatter Lab)用更轻的"免费+广告"已连续 3 季盈利</b>;Character.AI 证明高黏性救不了低变现。Crack 选了最激进的变现路线,短期营收最亮眼,但 <b>"API费 &gt; 营收"这条线不扭转(要么自研模型降本、要么继续涨价收割),长期难自立</b>。</div>
+    </section>
+
+    <section id="sources">
+      <h2 class="sec">CITATIONS</h2>
+      <h3 class="title">关键一手来源</h3>
+      <div class="srcgrid">
+        <a href="https://gall.dcinside.com/mgallery/board/view/?id=cr1&no=632">DCinside · 周烧10万自述</a>
+        <a href="https://gall.dcinside.com/mgallery/board/view/?id=cr1&no=1192">DCinside · 家属视角成瘾</a>
+        <a href="https://gall.dcinside.com/mgallery/board/view/?id=cr1&no=1186">DCinside · 怀念包月无限</a>
+        <a href="https://gall.dcinside.com/mgallery/board/view/?id=cr1&no=492">DCinside · A-RPG扭蛋吐槽</a>
+        <a href="https://apps.apple.com/kr/app/id6740223370?see-all=reviews">App Store 韩区评论</a>
+        <a href="https://mwm.ai/ko/apps/keuraeg-jeugheung-seosa-peulrei-ai-caeting/6740223370">App Store 评分分布</a>
+        <a href="https://namu.wiki/w/크랙(애플리케이션)">나무위키 主条目</a>
+        <a href="https://namu.wiki/w/크랙(애플리케이션)/논란 및 사건 사고">나무위키 论争事件专页</a>
+        <a href="https://zdnet.co.kr/view/?no=20260414102220">ZDNet · ARPU/留存/营收</a>
+        <a href="https://www.aitimes.com/news/articleView.html?idxno=171402">AITimes · Crack MAU 192万</a>
+        <a href="https://demoday.co.kr/bm-analysis/136">demoday · BM 分析(Crack 占70%)</a>
+        <a href="https://help.crack.wrtn.ai/guide/creator/info/benefits">官方 · 创作者分成规则</a>
+        <a href="https://crack.wrtn.ai/announcement/689ef9cdd42d0dc8d2484b0f">官方 · A-RPG 公告</a>
+        <a href="https://academy.prompie.com/communities/posts/제타와-크랙의-사용-후기-nHYKjD4F/">제타 vs 크랙 对比</a>
+        <a href="https://theqoo.net/square/3806351039">theqoo · 广告负面</a>
+        <a href="https://www.businesswire.com/news/home/20260415199414">BusinessWire · OOC 北美</a>
+      </div>
+    </section>
+
+    <footer>
+      Crack 商业价值与真实口碑 · 2026-06-25 · 3 路并行(真实口碑/商业变现/内容生态)· 韩国一手社区 + 审计财报<br>
+      用户原话保留韩文+中译 · 区分确证/推测 · API成本>营收为审计铁证 · 仅供内部研究参考
+    </footer>
+  </main>
+</div>
+<script>
+  const links=[...document.querySelectorAll('nav.side a.navi')];
+  const map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+  const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a)a.classList.add('on');}});},{rootMargin:'-20% 0px -70% 0px',threshold:0});
+  document.querySelectorAll('section[id]').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
