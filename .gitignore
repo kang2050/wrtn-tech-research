@@ -4,3 +4,4 @@ worklog.json
 web/.playwright-mcp/
 *.log
 node_modules/
+.project.json
